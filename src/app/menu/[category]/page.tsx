@@ -47,11 +47,6 @@
 import { ProductType } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
-
-type Props = {
-  params: { category: string }; // 确保 `params` 是一个普通对象
-};
 
 const getData = async (category: string) => {
   const res = await fetch(`http://localhost:3000/api/products?cat=${category}`, {
@@ -65,8 +60,8 @@ const getData = async (category: string) => {
   return res.json();
 };
 
-const CategoryPage: FC<Props> = async ({ params }) => {
-  const { category } = params; // 确保 `params` 是一个普通对象
+const CategoryPage = async ({ params }: { params: { category: string } }) => {
+  const { category } = params;
   const products: ProductType[] = await getData(category);
 
   return (
