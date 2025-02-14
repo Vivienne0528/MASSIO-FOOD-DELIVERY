@@ -45,13 +45,19 @@ import { NextRequest, NextResponse } from "next/server";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-export async function POST(
-  request: NextRequest,
-  context: { params: { orderId: string } } // Correct way to access params
-) {
-  const { orderId } = context.params; // Extract orderId properly
-
+export async function POST(request: NextRequest) {
   try {
+    // Extract orderId from the URL
+    const { pathname } = request.nextUrl;
+    const orderId = pathname.split("/").pop(); // Get last part of the URL
+
+    if (!orderId) {
+      return NextResponse.json(
+        { message: "Missing orderId in request" },
+        { status: 400 }
+      );
+    }
+
     const order = await prisma.order.findUnique({
       where: { id: orderId },
     });
