@@ -47,21 +47,20 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(
   request: NextRequest,
-  context: { params: { orderId: string } }
+  context: { params: { orderId: string } } // Correct way to access params
 ) {
-  const { orderId } = context.params; // Correct way to access route params
+  const { orderId } = context.params; // Extract orderId properly
 
   try {
     const order = await prisma.order.findUnique({
-      where: {
-        id: orderId,
-      },
+      where: { id: orderId },
     });
 
     if (!order) {
-      return new NextResponse(JSON.stringify({ message: "Order not found!" }), {
-        status: 404,
-      });
+      return NextResponse.json(
+        { message: "Order not found!" },
+        { status: 404 }
+      );
     }
 
     const paymentIntent = await stripe.paymentIntents.create({
@@ -75,14 +74,14 @@ export async function POST(
       data: { intent_id: paymentIntent.id },
     });
 
-    return new NextResponse(
-      JSON.stringify({ clientSecret: paymentIntent.client_secret }),
+    return NextResponse.json(
+      { clientSecret: paymentIntent.client_secret },
       { status: 200 }
     );
   } catch (error) {
     console.error("Payment Intent Error:", error);
-    return new NextResponse(
-      JSON.stringify({ message: "Internal Server Error" }),
+    return NextResponse.json(
+      { message: "Internal Server Error" },
       { status: 500 }
     );
   }
