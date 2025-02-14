@@ -44,26 +44,31 @@
 //   );
 // };
 
+import { GetStaticProps } from 'next';
 import { ProductType } from "@/types/types";
+import Link from 'next/link';
 import Image from "next/image";
-import Link from "next/link";
 
 const getData = async (category: string) => {
-  const res = await fetch(`http://localhost:3000/api/products?cat=${category}`, {
-    cache: "no-store",
-  });
-
+  const res = await fetch(`http://localhost:3000/api/products?cat=${category}`);
   if (!res.ok) {
-    throw new Error("Failed!");
+    throw new Error('Failed to fetch products');
   }
-
   return res.json();
 };
 
-const CategoryPage = async ({ params }: { params: { category: string } }) => {
-  const { category } = params;
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const { category } = params as { category: string }; // 强制转换类型
   const products: ProductType[] = await getData(category);
+  return {
+    props: {
+      products,
+      category,
+    },
+  };
+};
 
+const CategoryPage = ({ products, category }: { products: ProductType[], category: string }) => {
   return (
     <div className="flex flex-wrap text-red-500">
       {products.map((item) => (
