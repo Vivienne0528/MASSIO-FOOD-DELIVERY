@@ -47,9 +47,9 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(request: NextRequest) {
   try {
-    // Extract orderId from the URL
+    // 从 URL 解析 orderId
     const { pathname } = request.nextUrl;
-    const orderId = pathname.split("/").pop(); // Get last part of the URL
+    const orderId = pathname.split("/").pop(); // 取 URL 最后的部分
 
     if (!orderId) {
       return NextResponse.json(
@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // 获取订单数据
     const order = await prisma.order.findUnique({
       where: { id: orderId },
     });
@@ -69,12 +70,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // ✅ 确保 order.price 是有效的数字
+    if (!order.price || isNaN(Number(order.price))) {
+      return NextResponse.json(
+        { message: "Invalid order price!" },
+        { status: 400 }
+      );
+    }
+
+    const amount = Math.round(Number(order.price) * 100); // 转换为整数（cents）
+
+    // 创建支付意图
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: order.price * 100, // Convert to cents
+      amount: amount, // 以 cents 为单位
       currency: "usd",
       automatic_payment_methods: { enabled: true },
     });
 
+    // 更新数据库中的 intent_id
     await prisma.order.update({
       where: { id: orderId },
       data: { intent_id: paymentIntent.id },
