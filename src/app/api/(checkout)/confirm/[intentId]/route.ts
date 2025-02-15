@@ -26,13 +26,18 @@
 import { prisma } from "@/utils/connect";
 import { NextRequest, NextResponse } from "next/server";
 
-export const PUT = async (
-  request: NextRequest,
-  { params }: { params: { intentId: string } }
-) => {
-  const { intentId } = params; // ✅ 正确获取路由参数
-
+export const PUT = async (request: NextRequest) => {
   try {
+    // ✅ 手动解析 intentId
+    const urlParts = request.nextUrl.pathname.split("/");
+    const intentId = urlParts[urlParts.length - 1];
+
+    if (!intentId) {
+      return new NextResponse(JSON.stringify({ message: "Missing intentId" }), {
+        status: 400,
+      });
+    }
+
     await prisma.order.update({
       where: { intent_id: intentId },
       data: { status: "Being prepared!" },
