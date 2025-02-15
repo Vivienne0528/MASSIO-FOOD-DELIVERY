@@ -12,9 +12,8 @@ const stripePromise = loadStripe(
 const PayPage = ({ params }: { params: { id: string } }) => {
   const [clientSecret, setClientSecret] = useState("");
 
-  //In Next.js, params has become a Promise, which needs to be unwrapped through React.use() to access its properties.
-  //const { id } = params;
-  const { id } = use(params);
+
+  const { id } = params;
 
   useEffect(() => {
     const makeRequest = async () => {
