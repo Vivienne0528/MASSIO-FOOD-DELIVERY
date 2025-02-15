@@ -2,12 +2,12 @@ import { ProductType } from "@/types/types";
 import Image from "next/image";
 import React from "react";
 
-const getData = async ()=>{
-  const res = await fetch("http://localhost:3000/api/products",{
-    cache:"no-store"
+const getData = async () => {
+  const res = await fetch("https://massio-food-delivery.vercel.app/api/products", {
+    cache: "no-store"
   })
 
-  if(!res.ok){
+  if (!res.ok) {
     throw new Error("Failed!");
   }
 
@@ -16,7 +16,7 @@ const getData = async ()=>{
 
 const Featured = async () => {
 
-  const featuredProducts:ProductType[] = await getData()
+  const featuredProducts: ProductType[] = await getData()
 
   return (
     <div className="w-screen overflow-x-scroll text-red-500">
