@@ -10,6 +10,7 @@ const getData = async (category: string) => {
 
   if (!res.ok) {
     throw new Error("Failed!");
+
   }
 
   return res.json()
@@ -44,3 +45,4 @@ const CategoryPage = async ({ params }: Props) => {
   );
 };
 
+export default CategoryPage;
