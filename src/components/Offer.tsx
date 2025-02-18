@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React from "react";
 import { useRouter } from "next/navigation";
+import CountDown from "./CountDown";
 
 const Offer = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const Offer = () => {
           Progressively simplify effective e-toilers and process-centric methods
           of empowerment. Quickly pontificate parallel.
         </p>
-        {/* <CountDown/> */}
+        <CountDown />
         <button className="bg-red-500 text-white rounded-md py-3 px-6" onClick={() => router.push("/menu")} >Order Now</button>
       </div>
       {/* IMAGE CONTAINER */}
