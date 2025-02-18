@@ -1,5 +1,6 @@
 "use client";
 
+import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -18,7 +19,7 @@ const DeleteButton = ({ id }: { id: string }) => {
   }
 
   const handleDelete = async () => {
-    const res = await fetch(`https://massio-food-delivery.vercel.app/api/products/${id}`, {
+    const res = await fetch(`${apiUrl}/api/products/${id}`, {
       method: "DELETE",
     });
 

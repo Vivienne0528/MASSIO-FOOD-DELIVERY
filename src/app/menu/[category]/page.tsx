@@ -5,6 +5,7 @@ import { ProductType } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { apiUrl } from "@/utils/url";
 
 const CategoryPage = () => {
   const { category } = useParams(); // 获取 URL 参数
@@ -13,7 +14,7 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`/api/products?cat=${category}`, { cache: "no-store" });
+        const res = await fetch(`${apiUrl}/api/products?cat=${category}`, { cache: "no-store" });
         if (!res.ok) throw new Error("Failed!");
         const data = await res.json();
         setProducts(data);

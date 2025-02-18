@@ -5,6 +5,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { apiUrl } from "@/utils/url";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -19,7 +20,7 @@ const PayPage = () => {
 
     const makeRequest = async () => {
       try {
-        const res = await fetch(`/api/create-intent/${id}`, {
+        const res = await fetch(`${apiUrl}/api/create-intent/${id}`, {
           method: "POST",
         });
 

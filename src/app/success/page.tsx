@@ -20,7 +20,7 @@ const SuccessContent = ({ router }: { router: ReturnType<typeof useRouter> }) =>
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        await fetch(`https://massio-food-delivery.vercel.app/api/confirm/${payment_intent}`, {
+        await fetch(`{apiUrl}/api/confirm/${payment_intent}`, {
           method: "PUT",
         });
         setTimeout(() => {

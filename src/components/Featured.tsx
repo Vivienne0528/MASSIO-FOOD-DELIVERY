@@ -1,23 +1,31 @@
+"use client";
+
 import { ProductType } from "@/types/types";
 import { apiUrl } from "@/utils/url";
 import Image from "next/image";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-const getData = async () => {
-  const res = await fetch(`${apiUrl}/api/products`, {
-    cache: "no-store"
-  })
+const Featured = () => {
+  const [featuredProducts, setFeaturedProducts] = useState<ProductType[]>([]);
+  const router = useRouter();
 
-  if (!res.ok) {
-    throw new Error("Failed!");
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`${apiUrl}/api/products`, { cache: "no-store" });
+        if (!res.ok) {
+          throw new Error("Failed to fetch data!");
+        }
+        const data = await res.json();
+        setFeaturedProducts(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  return res.json()
-}
-
-const Featured = async () => {
-
-  const featuredProducts: ProductType[] = await getData()
+    fetchData();
+  }, []);
 
   return (
     <div className="w-screen overflow-x-scroll text-red-500">
@@ -32,15 +40,21 @@ const Featured = async () => {
             {/* IMAGE CONTAINER */}
             {item.img && (
               <div className="relative flex-1 w-full hover:rotate-[60deg] transition-all duration-500">
-                <Image src={item.img} alt="" fill className="object-contain" />
+                <Image
+                  src={item.img}
+                  alt={item.title}
+                  fill
+                  className="object-contain cursor-pointer"
+                  onClick={() => router.push(`/product/${item.id}`)}
+                />
               </div>
             )}
             {/* TEXT CONTAINER */}
-            <div className=" flex-1 flex flex-col items-center justify-center text-center gap-4">
+            <div className="flex-1 flex flex-col items-center justify-center text-center gap-4">
               <h1 className="text-xl font-bold uppercase xl:text-2xl 2xl:text-3xl">{item.title}</h1>
               <p className="p-4 2xl:p-8">{item.desc}</p>
               <span className="text-xl font-bold">${item.price}</span>
-              <button className="bg-red-500 text-white p-2 rounded-md">
+              <button className="bg-red-500 text-white p-2 rounded-md" onClick={() => router.push(`/product/${item.id}`)}>
                 Add to Cart
               </button>
             </div>

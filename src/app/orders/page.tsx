@@ -28,7 +28,7 @@ const OrdersPage = () => {
 
   const mutation = useMutation({
     mutationFn: ({ id, status }: { id: string; status: string }) => {
-      return fetch(`https://massio-food-delivery.vercel.app/api/orders/${id}`, {
+      return fetch(`${apiUrl}/api/orders/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
