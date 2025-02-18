@@ -8,6 +8,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import AddressForm from "./AddressForm";
+import { apiUrl } from "@/utils/url";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -63,7 +64,7 @@ const CheckoutForm = () => {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "https://massio-food-delivery.vercel.app/success",
+        return_url: `${apiUrl}/success`,
       },
     });
 

@@ -1,9 +1,10 @@
 import { ProductType } from "@/types/types";
+import { apiUrl } from "@/utils/url";
 import Image from "next/image";
 import React from "react";
 
 const getData = async () => {
-  const res = await fetch("https://massio-food-delivery.vercel.app/api/products", {
+  const res = await fetch(`${apiUrl}/api/products`, {
     cache: "no-store"
   })
 

@@ -83,7 +83,7 @@ const AddPage = () => {
 
     try {
       const url = await upload();
-      const res = await fetch("https://massio-food-delivery.vercel.app/api/products", {
+      const res = await fetch(`${apiUrl}/api/products", {
         method: "POST",
         body: JSON.stringify({
           img: url,
@@ -94,7 +94,7 @@ const AddPage = () => {
 
       const data = await res.json();
 
-      router.push(`/product/${data.id}`);
+      router.push(`/ product / ${ data.id }`);
     } catch (err) {
       console.log(err);
     }

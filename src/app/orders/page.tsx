@@ -1,6 +1,7 @@
 "use client";
 
 import { OrderType } from "@/types/types";
+import { apiUrl } from "@/utils/url";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -20,7 +21,7 @@ const OrdersPage = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["orders"],
     queryFn: () =>
-      fetch("https://massio-food-delivery.vercel.app/api/orders").then((res) => res.json()),
+      fetch(`${apiUrl}/api/orders`).then((res) => res.json()),
   });
 
   const queryClient = useQueryClient();

@@ -1,5 +1,6 @@
 "use client";
 import { useCartStore } from "@/utils/store";
+import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -19,7 +20,7 @@ const CartPage = () => {
       router.push("/login");
     } else {
       try {
-        const res = await fetch("https://massio-food-delivery.vercel.app/api/orders", {
+        const res = await fetch(`${apiUrl}/api/orders`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -30,7 +31,7 @@ const CartPage = () => {
           }),
         });
         const data = await res.json()
-        router.push(`/pay/${data.id}`)
+        router.push(`/ pay / ${data.id}`)
       } catch (err) {
         console.log(err);
       }
